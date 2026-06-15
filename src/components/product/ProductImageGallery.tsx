@@ -55,7 +55,7 @@ export default function ProductImageGallery({ images, name }: Props) {
   };
 
   return (
-    <div className="flex flex-col-reverse md:flex-row gap-4">
+    <div className="flex flex-col-reverse md:flex-row gap-3 sm:gap-4 overflow-hidden">
       {/* Vertical Thumbnails (left side on desktop, bottom on mobile) */}
       {imgs.length > 1 && (
         <div

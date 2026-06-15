@@ -41,7 +41,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
-      <body className="min-h-screen bg-white font-sans antialiased">
+      <body className="min-h-screen bg-white font-sans antialiased overflow-x-hidden">
         <SessionProvider>
           <QueryProvider>
             {children}

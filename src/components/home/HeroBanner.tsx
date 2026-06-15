@@ -40,7 +40,6 @@ const slides = [
 
 export default function HeroBanner() {
   const [current, setCurrent] = useState(0);
-  const [progress, setProgress] = useState(0);
   const imageWrapRef = useRef<HTMLDivElement>(null);
   const tagRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -67,16 +66,9 @@ export default function HeroBanner() {
 
   // Auto-advance
   useEffect(() => {
-    setProgress(0);
-    let elapsed = 0;
-    const step = 30;
     timerRef.current = setInterval(() => {
-      elapsed += step;
-      setProgress(Math.min((elapsed / DURATION) * 100, 100));
-      if (elapsed >= DURATION) {
-        setCurrent((c) => (c + 1) % slides.length);
-      }
-    }, step);
+      setCurrent((c) => (c + 1) % slides.length);
+    }, DURATION);
     return () => { if (timerRef.current) clearInterval(timerRef.current); };
   }, [current]);
 
@@ -106,8 +98,8 @@ export default function HeroBanner() {
       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/30" />
 
       {/* ── Main Content ── */}
-      <div className="relative z-10 h-full flex flex-col justify-center px-6 sm:px-10 lg:px-16">
-        <div className="max-w-2xl">
+      <div className="relative z-10 h-full flex flex-col justify-center container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-xl">
           {/* Tag */}
           <div ref={tagRef} className="mb-5">
             <span className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-white/80 bg-white/10 backdrop-blur-sm border border-white/15 rounded-full px-4 py-2">
@@ -152,8 +144,8 @@ export default function HeroBanner() {
       </div>
 
       {/* ── Stats strip ── */}
-      <div className="absolute bottom-16 sm:bottom-14 left-0 right-0 z-10 px-6 sm:px-10 lg:px-16">
-        <div className="flex items-center gap-6 sm:gap-10">
+      <div className="absolute bottom-12 left-0 right-0 z-10">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center gap-6 sm:gap-10">
           {[
             { value: "500+", label: "Sarees" },
             { value: "50K+", label: "Customers" },
@@ -170,34 +162,26 @@ export default function HeroBanner() {
         </div>
       </div>
 
-      {/* ── Slide Tabs at Bottom ── */}
-      <div className="absolute bottom-0 left-0 right-0 z-20">
-        {/* Progress bar */}
-        <div className="h-[3px] bg-white/10">
-          <div className="h-full bg-white/80 will-change-[width]" style={{ width: `${progress}%`, transition: "none" }} />
-        </div>
-        {/* Tab buttons */}
-        <div className="flex bg-black/50 backdrop-blur-md">
-          {slides.map((s, i) => (
-            <button
-              key={s.id}
-              onClick={() => goTo(i)}
-              className={`flex-1 py-3 px-4 text-left transition-all duration-300 border-t-2 ${
-                i === current
-                  ? "border-white bg-white/10"
-                  : "border-transparent hover:bg-white/5"
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <span className={`text-xs font-bold tabular-nums ${i === current ? "text-white" : "text-white/30"}`}>
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <span className={`text-xs font-medium hidden sm:inline ${i === current ? "text-white/90" : "text-white/25"}`}>
-                  {s.tag}
-                </span>
-              </div>
-            </button>
-          ))}
+      {/* ── Slide Dots at Bottom ── */}
+      <div className="absolute bottom-5 left-0 right-0 z-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-2">
+            {slides.map((s, i) => (
+              <button
+                key={s.id}
+                onClick={() => goTo(i)}
+                className="group flex items-center gap-2 transition-all duration-300"
+              >
+                <span
+                  className={`block rounded-full transition-all duration-300 ${
+                    i === current
+                      ? "w-8 h-2 bg-white"
+                      : "w-2 h-2 bg-white/40 group-hover:bg-white/60"
+                  }`}
+                />
+              </button>
+            ))}
+          </div>
         </div>
       </div>
     </section>
